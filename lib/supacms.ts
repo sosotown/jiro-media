@@ -4,7 +4,7 @@ import type { ArticleEntry, EntriesResponse } from "./types";
 const API_BASE = "https://cms.supa.dev/api/v1";
 const PROJECT_SLUG = "jiroramen";
 const CONTENT_TYPE = "article";
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 20;
 
 function getApiKey(): string {
   const key = process.env.SUPACMS_API_KEY;
@@ -53,7 +53,10 @@ let articlesPromise: Promise<ArticleEntry[]> | null = null;
 
 export function getAllPublishedArticles(): Promise<ArticleEntry[]> {
   if (!articlesPromise) {
-    articlesPromise = fetchAllPublishedArticles();
+    articlesPromise = fetchAllPublishedArticles().catch((error) => {
+      articlesPromise = null;
+      throw error;
+    });
   }
   return articlesPromise;
 }

@@ -7,14 +7,36 @@ export type SupaMedia = {
   mimeType: string;
 };
 
+export type RichTextMark = {
+  type: string;
+  attrs?: Record<string, unknown>;
+};
+
+export type RichTextNode = {
+  type: string;
+  attrs?: Record<string, unknown>;
+  content?: RichTextNode[];
+  text?: string;
+  marks?: RichTextMark[];
+};
+
+export type RelatedAuthor = {
+  id: string;
+  data: {
+    name: string;
+    bio: string;
+  };
+};
+
 export type ArticleData = {
   title: string;
   slug: string;
-  body: string;
+  body: RichTextNode;
   originalUrl?: string | null;
   featuredImage?: SupaMedia | null;
   authorName?: string | null;
   authorBio?: string | null;
+  author?: RelatedAuthor | null;
 };
 
 export type ArticleEntry = {

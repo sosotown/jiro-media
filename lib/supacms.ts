@@ -32,11 +32,7 @@ async function supacmsFetch<T>(path: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-/**
- * 公開済み記事を全件取得する(ページネーションを内部で吸収)。
- * 記事数が少ない(約90本)前提で、静的エクスポートのビルド時に全件を取得する。
- */
-export async function getAllPublishedArticles(): Promise<ArticleEntry[]> {
+async function fetchAllPublishedArticles(): Promise<ArticleEntry[]> {
   const all: ArticleEntry[] = [];
   let offset = 0;
 
@@ -53,24 +49,18 @@ export async function getAllPublishedArticles(): Promise<ArticleEntry[]> {
   return all;
 }
 
-export async function getArticleEntryById(
-  entryId: string
-): Promise<ArticleEntry> {
-  return supacmsFetch<ArticleEntry>(
-    `/projects/${PROJECT_SLUG}/content-types/${CONTENT_TYPE}/entries/${entryId}`
-  );
+let articlesPromise: Promise<ArticleEntry[]> | null = null;
+
+export function getAllPublishedArticles(): Promise<ArticleEntry[]> {
+  if (!articlesPromise) {
+    articlesPromise = fetchAllPublishedArticles();
+  }
+  return articlesPromise;
 }
 
-/**
- * スラッグから記事詳細を取得する。
- * 一覧APIにスラッグ絞り込みがないため、一覧からentryIdを特定し詳細エンドポイントを叩く。
- */
 export async function getArticleBySlug(
   slug: string
 ): Promise<ArticleEntry | null> {
   const all = await getAllPublishedArticles();
-  const match = all.find((entry) => entry.data.slug === slug);
-  if (!match) return null;
-
-  return getArticleEntryById(match.id);
+  return all.find((entry) => entry.data.slug === slug) ?? null;
 }

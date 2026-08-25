@@ -17,10 +17,6 @@ const HEALTH_TOPIC_KEYWORDS = [
   "コレステロール",
 ];
 
-/**
- * 記事タイトル・本文に健康関連の話題が含まれるかを簡易判定する。
- * 該当する場合、記事フッターに医療的助言でない旨の注記を表示する。
- */
 export function shouldShowMedicalDisclaimer(...texts: string[]): boolean {
   const combined = texts.join(" ");
   return HEALTH_TOPIC_KEYWORDS.some((keyword) => combined.includes(keyword));

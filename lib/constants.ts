@@ -1,5 +1,3 @@
-// CMS側にauthorName/authorBioが未設定の場合のデフォルト表示。
-// 実在しない資格・専門性を示唆しないよう、経歴を明示しない表現にする。
 export const DEFAULT_AUTHOR_NAME = "ジロラーメン編集部";
 export const DEFAULT_AUTHOR_BIO =
   "二郎系ラーメンを長年食べ歩いてきたブログ編集者。個人の体験・見解に基づいて記事を執筆しています。";

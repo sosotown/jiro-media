@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getAllPublishedArticles, getArticleBySlug } from "@/lib/supacms";
-import { excerptFromHtml } from "@/lib/html";
+import { excerptFromRichText, extractPlainText } from "@/lib/richText";
+import { resolveAuthor } from "@/lib/author";
 import { shouldShowMedicalDisclaimer } from "@/lib/medicalDisclaimer";
 import ArticleBody from "@/components/ArticleBody";
 import AuthorBio from "@/components/AuthorBio";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 
-// Cloudflare Pagesへの静的エクスポート(output: "export")では
-// ビルド時に生成したページ以外はオンデマンド生成できないため固定する。
-// CMSに記事が追加された場合は再ビルド+再デプロイが必要。
 export const dynamicParams = false;
 
 type Params = { slug: string };
@@ -33,7 +31,7 @@ export async function generateMetadata({
   }
 
   const { title, body, featuredImage } = article.data;
-  const description = excerptFromHtml(body, 120);
+  const description = excerptFromRichText(body, 120);
 
   return {
     title,
@@ -68,8 +66,9 @@ export default async function ArticlePage({
     notFound();
   }
 
-  const { title, body, featuredImage, authorName, authorBio } = article.data;
-  const showDisclaimer = shouldShowMedicalDisclaimer(title, body);
+  const { title, body, featuredImage } = article.data;
+  const author = resolveAuthor(article.data);
+  const showDisclaimer = shouldShowMedicalDisclaimer(title, extractPlainText(body));
 
   return (
     <article>
@@ -93,16 +92,16 @@ export default async function ArticlePage({
         </h1>
 
         <div className="mt-5 border-b border-border pb-6">
-          <AuthorBio variant="byline" authorName={authorName} authorBio={authorBio} />
+          <AuthorBio variant="byline" author={author} />
         </div>
 
         <div className="mt-8">
-          <ArticleBody html={body} />
+          <ArticleBody doc={body} />
         </div>
 
         {showDisclaimer && <MedicalDisclaimer />}
 
-        <AuthorBio variant="full" authorName={authorName} authorBio={authorBio} />
+        <AuthorBio variant="full" author={author} />
       </div>
     </article>
   );

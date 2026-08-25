@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ArticleEntry } from "@/lib/types";
-import { excerptFromHtml } from "@/lib/html";
+import { excerptFromRichText } from "@/lib/richText";
+import { resolveAuthor } from "@/lib/author";
 
 function BowlPlaceholder() {
   return (
@@ -23,8 +24,9 @@ function BowlPlaceholder() {
 }
 
 export default function ArticleCard({ entry }: { entry: ArticleEntry }) {
-  const { title, slug, body, featuredImage, authorName } = entry.data;
-  const excerpt = excerptFromHtml(body, 72);
+  const { title, slug, body, featuredImage } = entry.data;
+  const excerpt = excerptFromRichText(body, 72);
+  const author = resolveAuthor(entry.data);
 
   return (
     <Link
@@ -51,9 +53,7 @@ export default function ArticleCard({ entry }: { entry: ArticleEntry }) {
         <p className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted">
           {excerpt}
         </p>
-        {authorName && (
-          <p className="mt-1 text-xs text-muted">by {authorName}</p>
-        )}
+        <p className="mt-1 text-xs text-muted">by {author.name}</p>
       </div>
     </Link>
   );

@@ -1,4 +1,4 @@
-import { DEFAULT_AUTHOR_NAME, DEFAULT_AUTHOR_BIO } from "@/lib/constants";
+import type { ResolvedAuthor } from "@/lib/author";
 
 function truncate(text: string, maxLength: number): string {
   const trimmed = text.trim();
@@ -7,21 +7,17 @@ function truncate(text: string, maxLength: number): string {
 }
 
 type Props = {
-  authorName?: string | null;
-  authorBio?: string | null;
+  author: ResolvedAuthor;
   variant: "byline" | "full";
 };
 
-export default function AuthorBio({ authorName, authorBio, variant }: Props) {
-  const name = authorName || DEFAULT_AUTHOR_NAME;
-  const bio = authorBio || DEFAULT_AUTHOR_BIO;
-
+export default function AuthorBio({ author, variant }: Props) {
   if (variant === "byline") {
     return (
       <p className="text-sm text-muted">
-        <span className="text-muted-strong">{name}</span>
+        <span className="text-muted-strong">{author.name}</span>
         <span className="mx-2 text-border">/</span>
-        {truncate(bio, 48)}
+        {truncate(author.bio, 48)}
       </p>
     );
   }
@@ -29,10 +25,10 @@ export default function AuthorBio({ authorName, authorBio, variant }: Props) {
   return (
     <section className="mt-12 rounded-sm border border-border bg-surface p-6">
       <p className="font-heading text-base font-bold text-accent-strong">
-        {name}
+        {author.name}
       </p>
       <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted-strong">
-        {bio}
+        {author.bio}
       </p>
     </section>
   );

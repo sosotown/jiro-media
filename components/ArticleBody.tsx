@@ -1,12 +1,6 @@
-import { sanitizeArticleBody } from "@/lib/html";
+import { renderRichTextDoc } from "@/lib/richText";
+import type { RichTextNode } from "@/lib/types";
 
-export default function ArticleBody({ html }: { html: string }) {
-  const safeHtml = sanitizeArticleBody(html);
-
-  return (
-    <div
-      className="prose-article"
-      dangerouslySetInnerHTML={{ __html: safeHtml }}
-    />
-  );
+export default function ArticleBody({ doc }: { doc: RichTextNode }) {
+  return <div className="prose-article">{renderRichTextDoc(doc)}</div>;
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Shippori_Mincho, Noto_Sans_JP } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { SITE_URL } from "@/lib/siteUrl";
 import "./globals.css";
 
 const shipporiMincho = Shippori_Mincho({
@@ -17,8 +18,6 @@ const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
   display: "swap",
 });
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ziroramen-media.example.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

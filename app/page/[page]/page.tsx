@@ -4,7 +4,6 @@ import { getAllPublishedArticles } from "@/lib/supacms";
 import { sortByPublishedDesc, paginate } from "@/lib/pagination";
 import ArticleListPage from "@/components/ArticleListPage";
 
-// Cloudflare Pagesへの静的エクスポート用にビルド時の全ページを固定生成する。
 export const dynamicParams = false;
 
 type Params = { page: string };
@@ -13,7 +12,6 @@ export async function generateStaticParams(): Promise<Params[]> {
   const allArticles = await getAllPublishedArticles();
   const { totalPages } = paginate(allArticles, 1);
 
-  // 1ページ目は "/" が担うため、2ページ目以降のみ生成する。
   return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => ({
     page: String(i + 2),
   }));

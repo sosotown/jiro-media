@@ -1,11 +1,9 @@
 import type { MetadataRoute } from "next";
 import { getAllPublishedArticles } from "@/lib/supacms";
 import { sortByPublishedDesc, paginate } from "@/lib/pagination";
+import { SITE_URL } from "@/lib/siteUrl";
 
 export const dynamic = "force-static";
-
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ziroramen-media.example.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articles = sortByPublishedDesc(await getAllPublishedArticles());

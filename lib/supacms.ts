@@ -20,6 +20,7 @@ async function supacmsFetch<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: {
       Authorization: `Bearer ${getApiKey()}`,
+      "User-Agent": "ziroramen-media/1.0 (+https://github.com/sosotown/jiro-media)",
     },
   });
 

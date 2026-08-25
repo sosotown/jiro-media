@@ -1,15 +1,18 @@
 import type { ArticleEntry } from "@/lib/types";
 import ArticleCard from "@/components/ArticleCard";
 import Pagination from "@/components/Pagination";
+import PopularArticles from "@/components/PopularArticles";
 
 export default function ArticleListPage({
   pageArticles,
   currentPage,
   totalPages,
+  popularArticles,
 }: {
   pageArticles: ArticleEntry[];
   currentPage: number;
   totalPages: number;
+  popularArticles?: ArticleEntry[];
 }) {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
@@ -21,6 +24,8 @@ export default function ArticleListPage({
           全国の二郎系・二郎インスパイア系ラーメンを食べ歩いた記録をお届けします。
         </p>
       </section>
+
+      {popularArticles && <PopularArticles entries={popularArticles} />}
 
       {pageArticles.length === 0 ? (
         <p className="py-20 text-center text-sm text-muted">

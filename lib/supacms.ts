@@ -7,7 +7,7 @@ const CONTENT_TYPE = "article";
 const PAGE_SIZE = 20;
 
 function getApiKey(): string {
-  const key = process.env.SUPACMS_API_KEY;
+  const key = process.env.SUPACMS_API_KEY?.trim();
   if (!key) {
     throw new Error(
       "SUPACMS_API_KEY が設定されていません。サーバー環境変数を確認してください。"
@@ -24,8 +24,9 @@ async function supacmsFetch<T>(path: string): Promise<T> {
   });
 
   if (!res.ok) {
+    const body = await res.text().catch(() => "");
     throw new Error(
-      `supacms API error: ${res.status} ${res.statusText} (${path})`
+      `supacms API error: ${res.status} ${res.statusText} (${path}) ${body}`
     );
   }
 

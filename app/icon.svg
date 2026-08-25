@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- 背景：二郎系を象徴するイエローベース -->
+  <rect width="64" height="64" rx="14" fill="#FFE200"/>
+
+  <!-- どんぶり（黒×赤い二重ライン） -->
+  <path d="M12 36 C12 50, 22 54, 32 54 C42 54, 52 50, 52 36 Z" fill="#1A1A1A"/>
+  <path d="M16 38 Q32 40 48 38" stroke="#D32F2F" stroke-width="2" fill="none"/>
+
+  <!-- スープの液面 -->
+  <ellipse cx="32" cy="36" rx="20" ry="4" fill="#8D4E16"/>
+
+  <!-- ヤサイの山盛り（モヤシ・キャベツの山） -->
+  <path d="M16 36 Q22 22 32 16 Q42 22 48 36 Z" fill="#E8F5E9"/>
+  <!-- キャベツのアクセントグリーン -->
+  <path d="M26 28 Q30 20 34 26 Q28 32 26 28 Z" fill="#66BB6A"/>
+  <path d="M36 22 Q40 18 42 24 Z" fill="#81C784"/>
+
+  <!-- ニンニク（右側のトッピング） -->
+  <path d="M40 33 C38 31, 41 28, 44 29 C47 28, 48 31, 46 34 C44 36, 41 35, 40 33 Z" fill="#FFF9C4"/>
+
+  <!-- アブラ / 背脂（トップのアクセント） -->
+  <circle cx="32" cy="16" r="2.5" fill="#BCAAA4"/>
+  <circle cx="29" cy="18" r="1.5" fill="#BCAAA4"/>
+</svg>

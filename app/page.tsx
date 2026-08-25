@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { getAllPublishedArticles } from "@/lib/supacms";
 import { sortByPublishedDesc, paginate } from "@/lib/pagination";
+import { SITE_URL } from "@/lib/siteUrl";
 import ArticleListPage from "@/components/ArticleListPage";
 
 export const metadata: Metadata = {
-  title: "記事一覧",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    url: SITE_URL,
+  },
 };
 
 export default async function Home() {

@@ -1,15 +1,19 @@
 import Link from "next/link";
 
-function pageHref(page: number) {
-  return page <= 1 ? "/" : `/page/${page}`;
+function pageHref(basePath: string, page: number): string {
+  if (page <= 1) return basePath;
+  const prefix = basePath === "/" ? "" : basePath;
+  return `${prefix}/page/${page}`;
 }
 
 export default function Pagination({
   currentPage,
   totalPages,
+  basePath = "/",
 }: {
   currentPage: number;
   totalPages: number;
+  basePath?: string;
 }) {
   if (totalPages <= 1) return null;
 
@@ -23,7 +27,7 @@ export default function Pagination({
     >
       {hasPrev ? (
         <Link
-          href={pageHref(currentPage - 1)}
+          href={pageHref(basePath, currentPage - 1)}
           className="rounded-sm border border-border px-4 py-2 text-sm text-muted-strong transition-colors hover:border-accent hover:text-accent-strong"
         >
           前へ
@@ -40,7 +44,7 @@ export default function Pagination({
 
       {hasNext ? (
         <Link
-          href={pageHref(currentPage + 1)}
+          href={pageHref(basePath, currentPage + 1)}
           className="rounded-sm border border-border px-4 py-2 text-sm text-muted-strong transition-colors hover:border-accent hover:text-accent-strong"
         >
           次へ

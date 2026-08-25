@@ -28,6 +28,14 @@ export type RelatedAuthor = {
   };
 };
 
+export type RelatedCategory = {
+  id: string;
+  data: {
+    name: string;
+    slug: string;
+  };
+};
+
 export type ArticleData = {
   title: string;
   slug: string;
@@ -37,6 +45,7 @@ export type ArticleData = {
   authorName?: string | null;
   authorBio?: string | null;
   author?: RelatedAuthor | null;
+  category?: RelatedCategory | null;
 };
 
 export type ArticleEntry = {

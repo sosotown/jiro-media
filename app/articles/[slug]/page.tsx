@@ -6,11 +6,16 @@ import { excerptFromRichText, extractPlainText } from "@/lib/richText";
 import { resolveAuthor } from "@/lib/author";
 import { shouldShowMedicalDisclaimer } from "@/lib/medicalDisclaimer";
 import { formatDateJa } from "@/lib/date";
+import { sortByPublishedDesc } from "@/lib/pagination";
+import { getArticlesByCategorySlug } from "@/lib/categories";
+import { getPopularArticleSlugs } from "@/lib/webAnalytics";
 import { SITE_URL } from "@/lib/siteUrl";
 import ArticleBody from "@/components/ArticleBody";
 import AuthorBio from "@/components/AuthorBio";
 import MedicalDisclaimer from "@/components/MedicalDisclaimer";
 import Breadcrumb from "@/components/Breadcrumb";
+import CategoryBadge from "@/components/CategoryBadge";
+import ArticleSection from "@/components/ArticleSection";
 import JsonLd from "@/components/JsonLd";
 
 export const dynamicParams = false;
@@ -76,12 +81,33 @@ export default async function ArticlePage({
     notFound();
   }
 
-  const { title, body, featuredImage } = article.data;
+  const { title, body, featuredImage, category } = article.data;
   const author = resolveAuthor(article.data);
   const showDisclaimer = shouldShowMedicalDisclaimer(title, extractPlainText(body));
   const publishedAt = article.publishedAt ?? article.createdAt;
   const updatedAt = article.updatedAt;
   const url = `${SITE_URL}/articles/${slug}`;
+
+  const allArticles = await getAllPublishedArticles();
+
+  const sameCategoryArticles = category?.data
+    ? sortByPublishedDesc(
+        getArticlesByCategorySlug(allArticles, category.data.slug).filter(
+          (entry) => entry.data.slug !== slug
+        )
+      ).slice(0, 3)
+    : [];
+
+  const latestArticles = sortByPublishedDesc(allArticles)
+    .filter((entry) => entry.data.slug !== slug)
+    .slice(0, 3);
+
+  const popularSlugs = await getPopularArticleSlugs(4);
+  const popularArticles = popularSlugs
+    .filter((s) => s !== slug)
+    .map((s) => allArticles.find((entry) => entry.data.slug === s))
+    .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+    .slice(0, 3);
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -91,6 +117,7 @@ export default async function ArticlePage({
     image: featuredImage ? [featuredImage.url] : undefined,
     datePublished: publishedAt,
     dateModified: updatedAt,
+    articleSection: category?.data.name,
     author: {
       "@type": "Person",
       name: author.name,
@@ -104,6 +131,14 @@ export default async function ArticlePage({
       "@id": url,
     },
   };
+
+  const breadcrumbItems = [
+    { name: "二郎系マガジン", href: "/" },
+    ...(category?.data
+      ? [{ name: category.data.name, href: `/category/${category.data.slug}` }]
+      : []),
+    { name: title },
+  ];
 
   return (
     <article>
@@ -124,7 +159,13 @@ export default async function ArticlePage({
       )}
 
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-        <Breadcrumb items={[{ name: "二郎系マガジン", href: "/" }, { name: title }]} />
+        <Breadcrumb items={breadcrumbItems} />
+
+        {category?.data && (
+          <div className="mt-3">
+            <CategoryBadge name={category.data.name} slug={category.data.slug} />
+          </div>
+        )}
 
         <h1 className="mt-3 font-heading text-3xl font-bold leading-tight text-foreground sm:text-4xl">
           {title}
@@ -152,6 +193,15 @@ export default async function ArticlePage({
         {showDisclaimer && <MedicalDisclaimer />}
 
         <AuthorBio variant="full" author={author} />
+
+        <div className="mt-12">
+          <ArticleSection
+            title={category?.data ? `${category.data.name}の記事` : "関連記事"}
+            entries={sameCategoryArticles}
+          />
+          <ArticleSection title="新着記事" entries={latestArticles} />
+          <ArticleSection title="人気記事" entries={popularArticles} />
+        </div>
       </div>
     </article>
   );

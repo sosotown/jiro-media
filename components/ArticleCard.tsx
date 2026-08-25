@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ArticleEntry } from "@/lib/types";
 import { excerptFromRichText } from "@/lib/richText";
 import { resolveAuthor } from "@/lib/author";
+import CategoryBadge from "@/components/CategoryBadge";
 
 function BowlPlaceholder() {
   return (
@@ -24,16 +25,16 @@ function BowlPlaceholder() {
 }
 
 export default function ArticleCard({ entry }: { entry: ArticleEntry }) {
-  const { title, slug, body, featuredImage } = entry.data;
+  const { title, slug, body, featuredImage, category } = entry.data;
   const excerpt = excerptFromRichText(body, 72);
   const author = resolveAuthor(entry.data);
 
   return (
-    <Link
-      href={`/articles/${slug}`}
-      className="group flex flex-col overflow-hidden rounded-sm border border-border bg-surface transition-colors hover:border-accent"
-    >
-      <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-video">
+    <div className="group flex flex-col overflow-hidden rounded-sm border border-border bg-surface transition-colors hover:border-accent">
+      <Link
+        href={`/articles/${slug}`}
+        className="relative block aspect-[4/3] w-full overflow-hidden sm:aspect-video"
+      >
         {featuredImage ? (
           <Image
             src={featuredImage.url}
@@ -45,16 +46,23 @@ export default function ArticleCard({ entry }: { entry: ArticleEntry }) {
         ) : (
           <BowlPlaceholder />
         )}
-      </div>
+      </Link>
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <h2 className="font-heading text-lg font-bold leading-snug text-foreground group-hover:text-accent-strong transition-colors">
-          {title}
-        </h2>
-        <p className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted">
-          {excerpt}
-        </p>
-        <p className="mt-1 text-xs text-muted">by {author.name}</p>
+        {category?.data && (
+          <div>
+            <CategoryBadge name={category.data.name} slug={category.data.slug} />
+          </div>
+        )}
+        <Link href={`/articles/${slug}`} className="contents">
+          <h2 className="font-heading text-lg font-bold leading-snug text-foreground group-hover:text-accent-strong transition-colors">
+            {title}
+          </h2>
+          <p className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted">
+            {excerpt}
+          </p>
+          <p className="mt-1 text-xs text-muted">by {author.name}</p>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }

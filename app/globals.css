@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  /* 深いチャコール/オフブラックを基調としたベース */
-  --background: #1a1614;
-  --surface: #221d1a;
-  --surface-hover: #2b2420;
-  --border: #3a322c;
+  /* 白を基調とした明るいベース */
+  --background: #ffffff;
+  --surface: #faf7f2;
+  --surface-hover: #f3ede2;
+  --border: #e8ddc9;
 
   /* 豚骨スープ・背脂を思わせる琥珀系アクセント */
-  --accent: #cf9a44;
-  --accent-strong: #e6b768;
+  --accent: #b3792a;
+  --accent-strong: #8a5a1a;
 
   /* コール・辛味を連想させる控えめな赤 */
-  --red: #b8402f;
-  --red-strong: #d15a48;
+  --red: #9c3323;
+  --red-strong: #7d2819;
 
-  --foreground: #f2ece2;
-  --muted: #a89684;
-  --muted-strong: #c4b6a4;
+  --foreground: #241d17;
+  --muted: #75695c;
+  --muted-strong: #52483d;
 }
 
 @theme inline {
@@ -39,7 +39,7 @@
 
 html {
   background: var(--background);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {

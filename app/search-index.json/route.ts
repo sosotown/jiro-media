@@ -1,0 +1,8 @@
+import { buildSearchIndex } from "@/lib/searchIndex";
+
+export const dynamic = "force-static";
+
+export async function GET() {
+  const index = await buildSearchIndex();
+  return Response.json(index);
+}

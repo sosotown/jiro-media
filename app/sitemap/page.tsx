@@ -39,24 +39,9 @@ export default async function SitemapPage() {
               </Link>
             </li>
             <li>
-              <a
-                href="https://aisaac.jp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-accent-strong"
-              >
-                運営者情報
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://aisaac.jp/privacy_policy/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-accent-strong"
-              >
+              <Link href="/privacy-policy" className="hover:text-accent-strong">
                 プライバシーポリシー
-              </a>
+              </Link>
             </li>
           </ul>
         </section>

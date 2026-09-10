@@ -36,22 +36,9 @@ export default async function Footer() {
         )}
 
         <nav aria-label="サイト情報" className="mt-6 flex flex-wrap gap-x-4 gap-y-1">
-          <a
-            href="https://aisaac.jp"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs hover:text-accent-strong"
-          >
-            運営者情報
-          </a>
-          <a
-            href="https://aisaac.jp/privacy_policy/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs hover:text-accent-strong"
-          >
+          <Link href="/privacy-policy" className="text-xs hover:text-accent-strong">
             プライバシーポリシー
-          </a>
+          </Link>
           <Link href="/sitemap" className="text-xs hover:text-accent-strong">
             サイトマップ
           </Link>

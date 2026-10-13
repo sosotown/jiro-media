@@ -48,6 +48,13 @@ async function fetchAllPublishedArticles(): Promise<ArticleEntry[]> {
     offset += PAGE_SIZE;
   }
 
+  // 記事0件で静かにビルドが通ると、空のサイトがそのまま公開されてしまう。
+  if (all.length === 0) {
+    throw new Error(
+      "supacms: 公開記事を1件も取得できませんでした。CMS APIの応答を確認してください。"
+    );
+  }
+
   return all;
 }
 

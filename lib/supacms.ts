@@ -1,7 +1,7 @@
 import "server-only";
 import type { ArticleEntry, EntriesResponse } from "./types";
 
-const API_BASE = "https://cms.supa.dev/api/v1";
+const API_BASE = "https://cms.supa.ai/api/v1";
 const PROJECT_SLUG = "jiroramen";
 const CONTENT_TYPE = "article";
 const PAGE_SIZE = 20;

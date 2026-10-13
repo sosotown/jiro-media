@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "media.cms.supa.dev",
+        hostname: "cms.spcdn.dev",
       },
       {
         protocol: "https",
